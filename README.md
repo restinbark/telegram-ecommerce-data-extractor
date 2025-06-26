@@ -1,59 +1,112 @@
-# Telegram E-commerce Extractor (EthioMart NER Project)
+# 📦 Amharic NER System for Telegram-Based E-commerce (EthioMart Project)
 
-This project is part of Tenx Week 4 challenge and aims to develop an Amharic Named Entity Recognition (NER) system to support EthioMart's goal of building a centralized e-commerce platform based on Telegram data.
-
-## 🔍 Project Objective
-
-To fine-tune large language models (LLMs) for extracting key business entities from Amharic-language messages posted in Telegram e-commerce channels. The project consists of 6 tasks, from data ingestion to model interpretability and vendor analytics.
-
-## ✅ Completed Tasks
-
-### Task 1: Data Ingestion and Preprocessing
-- Developed Python scripts using **Telethon** to scrape messages from 5+ active Amharic Telegram e-commerce channels.
-- Collected over 500 messages including:
-  - Text content
-  - Views
-  - Sender IDs
-  - Timestamps
-- Cleaned and tokenized Amharic text using `nltk`, `emoji`, and `re` libraries.
-- Organized data into raw and processed formats for further use.
-
-### Task 2: CoNLL Labeling for NER
-- Selected 50 representative Telegram messages with clearly defined product, price, and location mentions.
-- Manually labeled these messages in **CoNLL format** using entity tags:
-  - `B-Product`, `I-Product`
-  - `B-PRICE`, `I-PRICE`
-  - `B-LOC`, `I-LOC`
-- Saved the labeled dataset as `ethio_ner_labels.conll`.
-
-## 📁 Project Structure
-
-telegram-ecommerce-extractor/
-├── data/
-│ ├── raw/
-│ ├── processed/
-│ │ └── ethio_ner_labels.conll/
-├── scripts/
-│ ├── auth/
-│ ├── prep/
-│ └── preprocess_amharic.py
-├── README.md
-
-
-## 🔜 Upcoming Tasks
-
-- **Task 3**: Fine-tune multilingual models (XLM-Roberta, mBERT, BERT-Tiny-Amharic) using Hugging Face Transformers.
-- **Task 4**: Compare model performance (F1, Precision, Recall).
-- **Task 5**: Apply SHAP and LIME for interpretability.
-- **Task 6**: Build Vendor Scorecard using NER + metadata.
-
-## 🚀 Tools Used
-- Python, Pandas, NLTK
-- Telethon
-- Hugging Face Transformers
-- Google Colab (for GPU support)
+A multilingual Named Entity Recognition (NER) system fine-tuned for Amharic Telegram messages — built to extract key e-commerce entities such as **Product**, **Price**, and **Location**. This project supports EthioMart’s goal of centralizing fragmented vendor activity into a unified digital platform.
 
 ---
 
-## 👥 Maintainer
-This project is developed by a solo contributor for Tenx Platform’s EthioMart NER challenge.
+## 🚀 Project Overview
+
+**Challenge**: Telegram is the dominant channel for informal e-commerce in Ethiopia. Vendors operate in scattered channels, and customers struggle to search or compare products.
+
+**Solution**: We built a custom Amharic NER model that extracts structured data from unstructured Telegram messages using open-source LLMs like `xlm-roberta-base` and `bert-base-multilingual-cased`.
+
+---
+
+## ✅ Tasks Completed
+
+### 🔹 Task 1: Data Ingestion & Preprocessing
+
+- Connected to 5+ Telegram vendor channels using Telethon.
+- Scraped messages and metadata.
+- Cleaned Amharic text and stored in structured format.
+
+**Outputs**:
+```bash
+data/raw/
+data/processed/
+scripts/auth/
+scripts/prep/
+🔹 Task 2: Entity Labeling in CoNLL Format
+Manually labeled 50+ messages.
+
+Developed auto_labeling.py to automate BIO tagging using keyword lists.
+
+Saved all labels in data/ethio_ner_labels.conll.
+
+Key Tags:
+
+B-Product, B-PRICE, B-LOC, I-PRICE, I-LOC, O
+
+🔹 Task 3: Model Fine-Tuning (XLM-Roberta)
+Used Hugging Face Trainer to fine-tune xlm-roberta-base.
+
+Token-label alignment using word_ids().
+
+Trained on GPU with validation evaluation.
+
+Results:
+
+Metric	Score
+F1 Score	0.82
+Precision	0.83
+Recall	0.81
+Accuracy	0.85
+
+✅ Saved and pushed model to Hugging Face Hub.
+
+🔹 Task 4: Model Comparison & Selection
+Trained a second model: bert-base-multilingual-cased (mBERT)
+Reused dataset and evaluation code for apples-to-apples comparison.
+
+Comparison:
+
+Model	F1 Score	Precision	Recall	Accuracy
+xlm-roberta-base	0.82	0.83	0.81	0.85
+bert-base-multilingual-cased	0.76	0.78	0.74	0.80
+
+✅ Recommendation: Use XLM-Roberta for deployment — better generalization and accuracy for Amharic entity extraction.
+
+📂 Repository Structure
+bash
+Copy
+Edit
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   ├── ethio_ner_labels.conll
+│   └── labeling_templates/
+│
+├── scripts/
+│   ├── auth/                # Telegram channel auth
+│   ├── prep/                # Text preprocessing
+│   ├── auto_labeling.py     # Rule-based entity tagger
+│   ├── tokenizer.py         # Token-label alignment
+│   ├── train_ner_model.py   # Hugging Face Trainer
+│
+├── results/                 # Saved models & logs
+├── README.md
+💬 Business Impact
+Enables real-time product tracking from Telegram
+
+Supports filtering by price & location
+
+Foundation for recommendation systems & search
+
+📊 Visualization Suggestion
+Bar chart of F1 score comparison
+
+Table of predicted entities (manual test)
+
+Power BI dashboard (optional): Top products, frequent locations
+
+🧠 Challenges Faced
+Challenge	Solution
+Transformers version mismatch	Reinstalled latest libs, restarted Colab
+Overlapping prices vs sizes	Regex refinement and keyword filtering
+Git mismanagement	Recreated clean branches: task-1, task-2, task-3
+Colab memory resets	Modularized notebook with repeatable blocks
+
+🔗 Links
+🤗 Hugging Face Model: restin7bark/xlm-roberta-base-amharic-ner
+
+📓 Training Notebook: https://colab.research.google.com/drive/1gNxFlWDYQuYBsY7DpuPrNZ0fJ3nVHMxv?usp=sharing
